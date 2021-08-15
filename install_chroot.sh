@@ -56,6 +56,7 @@ bootctl --path=/boot install
 
 echo "Add an EFI boot manager update hook in */etc/pacman.d/hooks/100-systemd-boot.hook*"
 
+mkdir /etc/pacman.d/hooks
 touch /etc/pacman.d/hooks/100-systemd-boot.hook
 cat > /etc/pacman.d/hooks/100-systemd-boot.hook <<EOL
 [Trigger]

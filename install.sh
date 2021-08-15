@@ -83,4 +83,4 @@ echo Install the base system
 pacstrap /mnt base base-devel linux linux-firmware vim
 
 echo Change root into the new system:
-arch-chroot /mnt
+echo enter arch-chroot /mnt
