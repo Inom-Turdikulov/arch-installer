@@ -33,6 +33,8 @@ mkswap $DISK_DRIVE_1-part2
 mkswap $DISK_DRIVE_2-part2
 
 echo Create swap
+swapoff $DISK_DRIVE_1-part2 $DISK_DRIVE_2-part2
+sleep 5
 swapon $DISK_DRIVE_1-part2 $DISK_DRIVE_2-part2
 
 echo Create zpool
