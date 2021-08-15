@@ -24,7 +24,7 @@ Same as fingerprint from downloads pages
 PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
 ## Install zfs
-sudo pacman -Syyu
+sudo pacman -Syy
 curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
 
 
@@ -110,15 +110,15 @@ sudo zpool create  -f [new pool name] mirror /dev/sdb /dev/sdc
 
 zpool create \
     -O atime=off \
-    -O acltype=posixacl
-    -O canmount=off
+    -O acltype=posixacl \
+    -O canmount=off \
     -O compression=lz4 \
     -O dnodesize=legacy \
     -O normalization=formD \
     -O xattr=sa \
     -O devices=off \
     -O mountpoint=none \
-    -R /mnt  rpool $DISK_DRIVE_0-part3 /dev/disk/by-id/$DISK_DRIVE_1-part3
+    -R /mnt rpool $DISK_DRIVE_0-part3 $DISK_DRIVE_1-part3
 ```
 
 If the pool is larger than 10 disks you should identify them ```by-path``` or ```by-vdev``` (see [here](https://openzfs.github.io/openzfs-docs/Project%20and%20Community/FAQ.html#selecting-dev-names-when-creating-a-pool-linux) for more details).
