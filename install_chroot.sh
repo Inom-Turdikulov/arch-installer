@@ -56,6 +56,7 @@ bootctl --path=/boot install
 
 echo "Add an EFI boot manager update hook in */etc/pacman.d/hooks/100-systemd-boot.hook*"
 
+touch /etc/pacman.d/hooks/100-systemd-boot.hook
 cat > /etc/pacman.d/hooks/100-systemd-boot.hook <<EOL
 [Trigger]
 Type = Package
@@ -68,6 +69,7 @@ When = PostTransaction
 Exec = /usr/bin/bootctl update
 EOL
 
+touch /boot/loader/loader.conf
 echo "Replace content of */boot/loader/loader.conf* with"
 cat > /boot/loader/loader.conf <<EOL
 default arch
@@ -77,6 +79,7 @@ console-mode 1
 EOL
 
 echo "Create a */boot/loader/entries/**arch**.conf* containing"
+touch /boot/loader/entries/arch.conf
 cat > /boot/loader/entries/arch.conf  <<EOL
 title Arch Linux
 linux /vmlinuz-linux
