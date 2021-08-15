@@ -24,7 +24,7 @@ Same as fingerprint from downloads pages
 PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
 ## Install zfs
-sudo pacman -Syy
+pacman -Syy
 curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
 
 
@@ -35,6 +35,7 @@ export DISK_2=
 
 ## Install core
 curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install.sh | bash
+curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install_chroot.sh | bash
 
 ## Arch Linux Root on ZFS
 

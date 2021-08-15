@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo "Remove all lines in ```/etc/fstab```, leaving only the entries for ```swap``` and ```boot```."
 sed -i '/swap\|boot\|SWAP/!d' /etc/fstab
 
@@ -32,7 +33,7 @@ echo "root:$ROOT_PASSWORD" | chpasswd
 
 echo Install ZFS, microcode etc:
 echo "I choose the default options for the *archzfs-linux* group: ```zfs-linux```, ```zfs-utils```, and ```mkinitcpio``` for initramfs."
-pacman -Syu archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git
+pacman -Syu --noconfirm archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git
 
 echo Generate host id:
 zgenhostid $(hostid)
