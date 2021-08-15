@@ -32,6 +32,8 @@ ls /dev/disk/by-id
 export DISK_1=
 export DISK_2=
 
+
+
 ## Install core
 curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install.sh | bash
 

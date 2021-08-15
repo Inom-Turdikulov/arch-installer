@@ -51,6 +51,9 @@ systemctl enable zfs-import-cache.service
 systemctl enable zfs-mount.service
 systemctl enable zfs-import.target
 
+echo Enable networkmanager
+systemctl enable NetworkManager
+
 echo Install the bootloader:
 bootctl --path=/boot install
 
@@ -92,7 +95,7 @@ EOL
 # If using an Intel processor, replace ```/amd-ucode.img``` with ```/intel-ucode.img```.
 
 echo Exit and unmount all
-exit
+#exit
 zfs umount -a
 umount -R /mnt
 
