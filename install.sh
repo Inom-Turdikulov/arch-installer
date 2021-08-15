@@ -23,7 +23,7 @@ sgdisk -n1:0:+512M -t1:ef00 $DISK_DRIVE_2
 sgdisk -n2:0:+8G -t2:8200 $DISK_DRIVE_2
 sgdisk -n3:0:0 -t3:bf00 $DISK_DRIVE_2
 
-while [ ! -f $DISK_DRIVE_1-part1 ]; do sleep 1; done
+sleep 5
 
 echo Format boot and swap partitions
 mkfs.vfat $DISK_DRIVE_1-part1
@@ -32,10 +32,10 @@ mkfs.vfat $DISK_DRIVE_2-part1
 mkswap $DISK_DRIVE_1-part2
 mkswap $DISK_DRIVE_2-part2
 
-echo Create swap
-swapoff $DISK_DRIVE_1-part2 $DISK_DRIVE_2-part2
 sleep 5
-swapon $DISK_DRIVE_1-part2 $DISK_DRIVE_2-part2
+echo Create swap
+swapon $DISK_DRIVE_1-part2
+swapon $DISK_DRIVE_2-part2
 
 echo Create zpool
 zpool create \
