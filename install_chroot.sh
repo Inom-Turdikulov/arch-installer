@@ -33,7 +33,7 @@ echo "root:$ROOT_PASSWORD" | chpasswd
 
 echo Install ZFS, microcode etc:
 echo "I choose the default options for the *archzfs-linux* group: ```zfs-linux```, ```zfs-utils```, and ```mkinitcpio``` for initramfs."
-pacman -Syu --noconfirm archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git
+pacman -Syu --noconfirm archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git dhcpcd
 
 echo Generate host id:
 zgenhostid $(hostid)
