@@ -23,6 +23,8 @@ sgdisk -n1:0:+512M -t1:ef00 $DISK_DRIVE_2
 sgdisk -n2:0:+8G -t2:8200 $DISK_DRIVE_2
 sgdisk -n3:0:0 -t3:bf00 $DISK_DRIVE_2
 
+while [ ! -f $DISK_DRIVE_1-part1 ]; do sleep 1; done
+
 echo Format boot and swap partitions
 mkfs.vfat $DISK_DRIVE_1-part1
 mkfs.vfat $DISK_DRIVE_2-part1
