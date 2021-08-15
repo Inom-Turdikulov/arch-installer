@@ -37,15 +37,15 @@ swapon $DISK_DRIVE_2-part2
 echo Create zpool
 zpool create \
     -O atime=off \
-    -O acltype=posixacl
-    -O canmount=off
+    -O acltype=posixacl \
+    -O canmount=off \
     -O compression=lz4 \
     -O dnodesize=legacy \
     -O normalization=formD \
     -O xattr=sa \
     -O devices=off \
     -O mountpoint=none \
-    -R /mnt  rpool $DISK_DRIVE_1-part3 /dev/disk/by-id/$DISK_DRIVE_2-part-3
+    -R /mnt  rpool $DISK_DRIVE_1-part3 $DISK_DRIVE_2-part3
 
 echo Create datasets
 zfs create -o canmount=off -o mountpoint=none rpool/ROOT
