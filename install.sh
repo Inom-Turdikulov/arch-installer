@@ -4,8 +4,8 @@ setfont latarcyrheb-sun32
 
 ls /dev/disk/by-id
 
-read -rp "Enter disk 1 id: " DISK_1
-read -rp "Enter disk 2 id: " DISK_2
+read -p "Enter disk 1 id: " DISK_1
+read -p "Enter disk 2 id: " DISK_2
 
 DISK_DRIVE_1="/dev/disk/by-id/$DISK_1"
 DISK_DRIVE_2="/dev/disk/by-id/$DISK_1"
