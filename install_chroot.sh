@@ -27,7 +27,7 @@ echo -e "127.0.0.1 localhost\n::1 localhost" >> /etc/hosts
 
 
 echo Set root password
-read -rp "Enter root password: " ROOT_PASSWORD
+read -rp "Enter root password: "
 echo "root:$ROOT_PASSWORD" | chpasswd
 
 echo Install ZFS, microcode etc:

@@ -1,11 +1,12 @@
 #!/bin/bash
+# export ROOT_PASSWORD=
+# export DISK_1=
+# export DISK_2=
+
 set -e
 setfont latarcyrheb-sun32
 
 ls /dev/disk/by-id
-
-read -p "Enter disk 1 id: " DISK_1
-read -p "Enter disk 2 id: " DISK_2
 
 DISK_DRIVE_1="/dev/disk/by-id/$DISK_1"
 DISK_DRIVE_2="/dev/disk/by-id/$DISK_1"
