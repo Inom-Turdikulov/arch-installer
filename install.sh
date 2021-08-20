@@ -82,5 +82,5 @@ genfstab -U /mnt >> /mnt/etc/fstab
 echo Install the base system
 pacstrap /mnt base base-devel linux linux-firmware neovim
 
-echo Change root into the new system:
-echo enter arch-chroot /mnt
+echo Run chrot script
+arch-chroot /mnt ./install_chroot.sh
