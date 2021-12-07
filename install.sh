@@ -50,6 +50,8 @@ zpool create \
 echo Create datasets
 zfs create -o canmount=off -o mountpoint=none rpool/ROOT
 zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT/default
+zfs create -o setuid=off -o devices=off -o sync=disabled -o mountpoint=/tmp rpool/ROOT/tmp
+
 zfs create -o mountpoint=none rpool/DATA
 zfs create -o encryption=on -o keyformat=$HOME_PASSWORD -o mountpoint=/home rpool/DATA/home
 zfs create -o mountpoint=/root rpool/DATA/home/root
