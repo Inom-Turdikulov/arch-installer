@@ -33,7 +33,7 @@ setfont latarcyrheb-sun32
 pacman -Syy
 curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
 
-
+# use stdout to save disk ids, edit as variables, source them...
 ls /dev/disk/by-id
 export DISK_1=
 export DISK_2=
