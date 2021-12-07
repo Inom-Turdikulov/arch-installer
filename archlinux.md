@@ -31,7 +31,10 @@ curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bas
 ls /dev/disk/by-id
 export DISK_1=
 export DISK_2=
-
+export HOME_PASSWORD=
+[ -z "$DISK_1" ] && echo "Warning DISK_1 Empty"
+[ -z "$DISK_2" ] && echo "Warning DISK_2 Empty"
+[ -z "$HOME_PASSWORD" ] && echo "Warning HOME_PASSWORD Empty"
 
 
 ## Install core
