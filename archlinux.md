@@ -27,6 +27,9 @@ USE tmux session to contorl errors, scrollback, etc...
 
 ## Install zfs
 ```
+# set bigger font
+setfont latarcyrheb-sun32
+
 pacman -Syy
 curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
 
