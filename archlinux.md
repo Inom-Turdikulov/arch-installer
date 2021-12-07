@@ -24,6 +24,7 @@ Same as fingerprint from downloads pages
 PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
 ## Install zfs
+```
 pacman -Syy
 curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
 
@@ -35,7 +36,7 @@ export HOME_PASSWORD=
 [ -z "$DISK_1" ] && echo "Warning DISK_1 Empty"
 [ -z "$DISK_2" ] && echo "Warning DISK_2 Empty"
 [ -z "$HOME_PASSWORD" ] && echo "Warning HOME_PASSWORD Empty"
-
+```
 
 ## Install core
 curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install.sh | bash
