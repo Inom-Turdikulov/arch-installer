@@ -23,6 +23,8 @@ Primary key fingerprint: `4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC`
 Same as fingerprint from downloads pages
 PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
+USE tmux session to contorl errors, scrollback, etc...
+
 ## Install zfs
 ```
 pacman -Syy
