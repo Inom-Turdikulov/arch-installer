@@ -52,6 +52,9 @@ bash 0_zfs_init.sh
 # Create pool
 bash 2_pool.sh
 
+# Check ashift
+zdb -C # shows ashift=12 or more?
+
 # create home encrypted
 zfs create -o encryption=on -o keyformat=passphrase -o mountpoint=/home rpool/DATA/home
 
