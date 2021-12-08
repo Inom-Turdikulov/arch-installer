@@ -47,7 +47,7 @@ nvim vars
 bash 1_install.sh
 
 # Install zfs
-bash 0_zfs_init.sh
+bash 1_1_zfs_init.sh
 
 # Create pool
 bash 2_pool.sh
