@@ -52,9 +52,14 @@ ls /dev/disk/by-id >> vars
 # edit vars
 nvim vars
 bash 2_pool.sh
+
+# create home encrypted
+zfs create -o encryption=on -o keyformat=passphrase -o mountpoint=/home rpool/DATA/home
+
+bash 2_pool_2.sh
 ```
 
-## Create pool
+## Install core
 ```
 arch-chroot /mnt
 

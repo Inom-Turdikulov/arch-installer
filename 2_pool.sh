@@ -38,35 +38,5 @@ zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT/default
 zfs create -o setuid=off -o devices=off -o sync=disabled -o mountpoint=/tmp rpool/ROOT/tmp
 
 zfs create -o mountpoint=none rpool/DATA
-zfs create -o encryption=on -o keyformat=passphrase -o mountpoint=/home rpool/DATA/home
-zfs create -o mountpoint=/root rpool/DATA/home/root
-zfs create -o mountpoint=/local rpool/DATA/local
-zfs create -o mountpoint=none rpool/DATA/var
-zfs create -o mountpoint=/var/log rpool/DATA/var/log # after a rollback, systemd-journal blocks at reboot without this dataset
-zpool set bootfs=rpool/ROOT/default rpool
 
 
-echo Unmount all
-zfs umount -a
-rm -rf /mnt/*
-
-echo Export/Reimport pool
-zpool export rpool
-zpool import -d /dev/disk/by-id -R /mnt rpool -N
-
-echo Mount
-zfs mount rpool/ROOT/default
-zfs mount -a
-
-echo Mount boot partition:
-mkdir /mnt/boot
-mount $DISK_DRIVE_1-part1 /mnt/boot
-
-echo Generate fstab
-mkdir /mnt/etc
-genfstab -U /mnt >> /mnt/etc/fstab
-
-echo Install the base system
-pacstrap /mnt base base-devel linux linux-firmware neovim
-
-echo Run chrot script
