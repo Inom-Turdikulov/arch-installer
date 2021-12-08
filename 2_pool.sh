@@ -20,7 +20,7 @@ swapon $DISK_DRIVE_1-part2
 #swapon $DISK_DRIVE_2-part2
 
 echo Create zpool
-zpool create \
+zpool create -f \
     -O atime=off \
     -O acltype=posixacl \
     -O canmount=off \

@@ -26,25 +26,35 @@ PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
 USE tmux session to contorl errors, scrollback, etc...
 
+## Prepare drive
+```
+pacman -Syy
 pacman -S git
 git clone https://github.com/inomoz/arch-installer
 
-## Install zfs
-```
-bash 0_zfs_init.sh
-
-# use stdout to save disk ids, edit as variables, source them...
-ls /dev/disk/by-id
-
+ls /dev/disk/by-id >> vars
 # edit vars
-./vars
-```
+nvim vars
 
-## Install core
-bash 1_install_core.sh
+bash 1_install.sh
+reboot
+
+# Install zfs
+pacman -S git
+git clone https://github.com/inomoz/arch-installer
+
+bash 0_zfs_init.sh
+```
 
 ## Create pool
+```
+ls /dev/disk/by-id >> vars
+# edit vars
+nvim vars
+bash 2_pool.sh
+```
 
+## Create pool
 ```
 arch-chroot /mnt
 
