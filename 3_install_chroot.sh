@@ -26,11 +26,6 @@ echo -e "KEYMAP=us\n#FONT=latarcyrheb-sun32" > /etc/vconsole.conf
 echo al-zfs > /etc/hostname
 echo -e "127.0.0.1 localhost\n::1 localhost" >> /etc/hosts
 
-
-echo Set root password
-read -rp "Enter root password: "
-echo "root:$ROOT_PASSWORD" | chpasswd
-
 echo Install ZFS, microcode etc:
 echo "I choose the default options for the *archzfs-linux* group: ```zfs-linux```, ```zfs-utils```, and ```mkinitcpio``` for initramfs."
 pacman -Syu --noconfirm archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git dhcpcd
@@ -90,6 +85,27 @@ linux /vmlinuz-linux
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
 options zfs=rpool/ROOT/default rw
+EOL
+
+
+echo "Create a zfs pam mount script"
+touch /sbin/mount-zfs-homedir
+chmod +x /sbin/mount-zfs-homedir
+cat > /sbin/mount-zfs-homedir  <<EOL
+#!/bin/bash
+
+# simplified from https://talldanestale.dk/2020/04/06/zfs-and-homedir-encryption/
+
+set -eu
+
+# Password is given to us via stdin, save it in a variable for later
+PASS=$(cat -)
+
+VOLNAME="rpool/DATA/home"
+
+# Unlock and mount the volume
+zfs load-key "$VOLNAME" <<< "$PASS" || continue
+zfs mount "$VOLNAME" || true # ignore errors
 EOL
 
 # If using an Intel processor, replace ```/amd-ucode.img``` with ```/intel-ucode.img```.

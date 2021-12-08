@@ -2,11 +2,9 @@
 # export ROOT_PASSWORD=
 # export DISK_1=
 # export DISK_2=
+source vars
 
 set -e
-setfont latarcyrheb-sun32
-
-ls /dev/disk/by-id
 
 DISK_DRIVE_1="/dev/disk/by-id/$DISK_1"
 DISK_DRIVE_2="/dev/disk/by-id/$DISK_2"

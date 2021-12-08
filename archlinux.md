@@ -7,6 +7,7 @@ Verify sha1 checksum (replace archlinux-2021.08.01-x86_64.iso with your image pa
 cd ~/downloads # optional
 sha1sum archlinux-2021.08.01-x86_64.iso
 # 4904c8a6df8bac8291b7b7582c26c4da9439f1cf
+# e303b93788220dbe8e0ba1804c90beebe432cf63
 ```
 
 Compare checksumm with listed on site:
@@ -27,93 +28,45 @@ USE tmux session to contorl errors, scrollback, etc...
 
 ## Install zfs
 ```
-# set bigger font
-setfont latarcyrheb-sun32
-
-pacman -Syy
-curl -s https://raw.githubusercontent.com/inomoz/archiso-zfs-1/master/init | bash
+bash 0_zfs_init.sh
 
 # use stdout to save disk ids, edit as variables, source them...
 ls /dev/disk/by-id
-export DISK_1=
-export DISK_2=
-[ -z "$DISK_1" ] && echo "Warning DISK_1 Empty"
-[ -z "$DISK_2" ] && echo "Warning DISK_2 Empty"
-[ -z "$HOME_PASSWORD" ] && echo "Warning HOME_PASSWORD Empty"
+
+# edit vars
+./vars
 ```
 
 ## Install core
-curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install.sh | bash
+bash 1_install_core.sh
+
+## Create pool
 
 ```
-echo Format boot and swap partitions
-mkfs.vfat $DISK_DRIVE_1-part1
-mkfs.vfat $DISK_DRIVE_2-part1
+arch-chroot /mnt
 
-mkswap $DISK_DRIVE_1-part2
-mkswap $DISK_DRIVE_2-part2
+# Set root password
+passwd root
 
-echo Create swap
-swapon $DISK_DRIVE_1-part2
-swapon $DISK_DRIVE_2-part2
+bash ./3_install_chroot.sh
+exit
 
-echo Create zpool
-zpool create \
-    -O atime=off \
-    -O acltype=posixacl \
-    -O canmount=off \
-    -O compression=lz4 \
-    -O dnodesize=legacy \
-    -O normalization=formD \
-    -O xattr=sa \
-    -O devices=off \
-    -O mountpoint=none \
-    -R /mnt  rpool $DISK_DRIVE_1-part3 $DISK_DRIVE_2-part3
-
-echo Create datasets
-zfs create -o canmount=off -o mountpoint=none rpool/ROOT
-zfs create -o mountpoint=/ -o canmount=noauto rpool/ROOT/default
-zfs create -o setuid=off -o devices=off -o sync=disabled -o mountpoint=/tmp rpool/ROOT/tmp
-
-zfs create -o mountpoint=none rpool/DATA
-zfs create -o encryption=on -o keyformat=passphrase -o mountpoint=/home rpool/DATA/home
-zfs create -o mountpoint=/root rpool/DATA/home/root
-zfs create -o mountpoint=/local rpool/DATA/local
-zfs create -o mountpoint=none rpool/DATA/var
-zfs create -o mountpoint=/var/log rpool/DATA/var/log # after a rollback, systemd-journal blocks at reboot without this dataset
-zpool set bootfs=rpool/ROOT/default rpool
-
-
-echo Unmount all
-zfs umount -a
-rm -rf /mnt/*
-
-echo Export/Reimport pool
-zpool export rpool
-zpool import -d /dev/disk/by-id -R /mnt rpool -N
-
-echo Mount
-zfs mount rpool/ROOT/default
-zfs mount -a
-
-echo Mount boot partition:
-mkdir /mnt/boot
-mount $DISK_DRIVE_1-part1 /mnt/boot
-
-echo Generate fstab
-mkdir /mnt/etc
-genfstab -U /mnt >> /mnt/etc/fstab
-
-echo Install the base system
-pacstrap /mnt base base-devel linux linux-firmware neovim
-
-echo Run chrot script
-arch-chroot /mnt ./install_chroot.sh
+# Add zfs mount script
+/etc/pam.d/system-auth
+auth       optional                    pam_exec.so          expose_authtok /sbin/mount-zfs-homedir
 ```
 
 
-export ROOT_PASSWORD=
-curl -s https://raw.githubusercontent.com/inomoz/arch-installer/main/install_chroot.sh | bash
+
+
+
+
+
+
+
+
+
+
 
 ## Arch Linux Root on ZFS
 
