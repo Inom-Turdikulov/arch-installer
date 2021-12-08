@@ -81,13 +81,21 @@ exit
 auth       optional                    pam_exec.so          expose_authtok /sbin/mount-zfs-homedir
 ```
 
+## Add user
+Users
+```
+# Install sudo package
+pacman -S sudo
 
+# Configure sudo (uses vim as default editor) by running visudo and uncommenting the line:
+## Uncomment to allow members of group wheel to execute any command
+%wheel ALL=(ALL) ALL
+Now we're going to add a new user by running: (change myuser to your username)
 
-
-
-
-
-
+useradd -m -g users -G wheel myuser
+# Change the new user passord:
+passwd myuser
+```
 
 
 
