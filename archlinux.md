@@ -26,6 +26,9 @@ PGP fingerprint: 0x9741E8AC (0x9741E8AC - is clickable).
 
 USE tmux session to contorl errors, scrollback, etc...
 
+pacman -S git
+git clone https://github.com/inomoz/arch-installer
+
 ## Install zfs
 ```
 bash 0_zfs_init.sh
