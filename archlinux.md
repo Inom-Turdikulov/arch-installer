@@ -31,33 +31,25 @@ USE tmux session to contorl errors, scrollback, etc...
 # Get disk info
 lsblk
 
-# full wipe 2 disks
+# full wipe 2 disks, increase BS to faster erase drive
 dd if=/dev/urandom of=/dev/sdX1 bs=4k
 dd if=/dev/urandom of=/dev/sdX2 bs=4k
+reboot
 
 pacman -Syy
 pacman -S git
-git clone https://git.io/JDJDR
+git clone https://github.com/inomoz/arch-installer && cd arch-installer
 
 ls /dev/disk/by-id >> vars
 # edit vars
 nvim vars
 
 bash 1_install.sh
-reboot
 
 # Install zfs
-pacman -S git
-git clone https://git.io/JDJDR
-
 bash 0_zfs_init.sh
-```
 
-## Create pool
-```
-ls /dev/disk/by-id >> vars
-# edit vars
-nvim vars
+# Create pool
 bash 2_pool.sh
 
 # create home encrypted
@@ -82,7 +74,6 @@ auth       optional                    pam_exec.so          expose_authtok /sbin
 ```
 
 ## Add user
-Users
 ```
 # Install sudo package
 pacman -S sudo
@@ -96,9 +87,6 @@ useradd -m -g users -G wheel myuser
 # Change the new user passord:
 passwd myuser
 ```
-
-
-
 
 
 ## Arch Linux Root on ZFS
