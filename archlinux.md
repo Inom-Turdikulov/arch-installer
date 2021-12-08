@@ -28,6 +28,13 @@ USE tmux session to contorl errors, scrollback, etc...
 
 ## Prepare drive
 ```
+# Get disk info
+lsblk
+
+# full wipe 2 disks
+dd if=/dev/urandom of=/dev/sdX1 bs=4k
+dd if=/dev/urandom of=/dev/sdX2 bs=4k
+
 pacman -Syy
 pacman -S git
 git clone https://github.com/inomoz/arch-installer
