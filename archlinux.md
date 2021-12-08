@@ -37,7 +37,7 @@ dd if=/dev/urandom of=/dev/sdX2 bs=4k
 
 pacman -Syy
 pacman -S git
-git clone https://github.com/inomoz/arch-installer
+git clone https://git.io/JDJDR
 
 ls /dev/disk/by-id >> vars
 # edit vars
@@ -48,7 +48,7 @@ reboot
 
 # Install zfs
 pacman -S git
-git clone https://github.com/inomoz/arch-installer
+git clone https://git.io/JDJDR
 
 bash 0_zfs_init.sh
 ```
