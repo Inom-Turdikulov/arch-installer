@@ -32,8 +32,8 @@ USE tmux session to contorl errors, scrollback, etc...
 lsblk
 
 # full wipe 2 disks, increase BS to faster erase drive
-dd if=/dev/urandom of=/dev/sdX1 bs=4k
-dd if=/dev/urandom of=/dev/sdX2 bs=4k
+dd if=/dev/urandom of=/dev/sdX1 bs=4k status=progress
+dd if=/dev/urandom of=/dev/sdX2 bs=4k status=progress
 reboot
 
 pacman -Syy
@@ -44,16 +44,14 @@ ls /dev/disk/by-id >> vars
 # edit vars
 nvim vars
 
+# Prepare drives
 bash 1_install.sh
 
 # Install zfs
 bash 1_1_zfs_init.sh
 
-# Create pool
+# Create pool (check ashift in script)
 bash 2_pool.sh
-
-# Check ashift
-zdb -C # shows ashift=12 or more?
 
 # create home encrypted
 zfs create -o encryption=on -o keyformat=passphrase -o mountpoint=/home rpool/DATA/home
