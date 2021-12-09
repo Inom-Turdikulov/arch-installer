@@ -92,7 +92,7 @@ exit
 # Add zfs mount script
 https://wiki.archlinux.org/title/ZFS#Unlock_at_login_time:_PAM
 noauto is important in fstab
-you can place pam line (/etc/pam.d/system-auth) in end of first section
+you can place pam line (/etc/pam.d/system-auth) in end of file 
 ```
 
 ## Add user
