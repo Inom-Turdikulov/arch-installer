@@ -116,6 +116,12 @@ xf86-video-amdgpu
 or any other
 ```
 
+## Install some base packages
+```
+pip3 install neovim
+...
+```
+
 
 ## Arch Linux Root on ZFS
 
