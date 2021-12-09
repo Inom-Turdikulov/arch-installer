@@ -20,8 +20,6 @@ swapon $DISK_DRIVE_1-part2
 #swapon $DISK_DRIVE_2-part2
 
 echo Create zpool
-zpool create -f \
-
 # parameters from https://wiki.archlinux.org/title/Install_Arch_Linux_on_ZFS
 zpool create -f -o ashift=12         \
              -O acltype=posixacl       \
