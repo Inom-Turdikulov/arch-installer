@@ -69,6 +69,11 @@ arch-chroot /mnt
 passwd root
 
 bash ./3_install_chroot.sh
+
+# If you have issues with zfs-linux check this manual 
+# https://openzfs.github.io/openzfs-docs/Getting%20Started/Arch%20Linux/1-zfs-linux.html#
+require removining linux linux-firmware packages & rebuild
+
 exit
 
 # Add zfs mount script
