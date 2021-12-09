@@ -34,8 +34,3 @@ mount $DISK_DRIVE_1-part1 /mnt/boot
 echo Generate fstab
 mkdir /mnt/etc
 genfstab -U /mnt >> /mnt/etc/fstab
-
-echo Install the base system
-pacstrap /mnt base base-devel linux linux-firmware neovim
-
-echo Run chrot script
