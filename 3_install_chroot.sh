@@ -17,7 +17,7 @@ echo -e "127.0.0.1 localhost\n::1 localhost" >> /etc/hosts
 
 echo Install ZFS, microcode etc:
 echo "I choose the default options for the *archzfs-linux* group: ```zfs-linux```, ```zfs-utils```, and ```mkinitcpio``` for initramfs."
-pacman -Syu --noconfirm archzfs-linux intel-ucode networkmanager sudo openssh rsync borg git dhcpcd
+pacman -Syu --noconfirm networkmanager sudo openssh rsync borg git dhcpcd
 
 echo Generate host id:
 zgenhostid $(hostid)
