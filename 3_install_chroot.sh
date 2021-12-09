@@ -66,9 +66,9 @@ timeout 3
 console-mode 1
 EOL
 
-echo "Create a */boot/loader/entries/**arch**.conf* containing"
 touch /boot/loader/entries/arch.conf
-cat > /boot/loader/entries/arch.conf  <<EOL
+echo "Create a */boot/loader/entries/**arch**.conf* containing"
+cat > /boot/loader/entries/arch.conf <<EOL
 title Arch Linux
 linux /vmlinuz-linux
 initrd /intel-ucode.img
@@ -80,22 +80,18 @@ EOL
 echo "Create a zfs pam mount script"
 touch /sbin/mount-zfs-homedir
 chmod +x /sbin/mount-zfs-homedir
-cat > /sbin/mount-zfs-homedir  <<EOL
+cat > /sbin/mount-zfs-homedir <<EOL
 #!/bin/bash
-
 # simplified from https://talldanestale.dk/2020/04/06/zfs-and-homedir-encryption/
-
 set -eu
-
 # Password is given to us via stdin, save it in a variable for later
 PASS=$(cat -)
-
 VOLNAME="rpool/DATA/home"
-
 # Unlock and mount the volume
 zfs load-key "$VOLNAME" <<< "$PASS" || continue
 zfs mount "$VOLNAME" || true # ignore errors
 EOL
+
 
 # If using an Intel processor, replace ```/amd-ucode.img``` with ```/intel-ucode.img```.
 
