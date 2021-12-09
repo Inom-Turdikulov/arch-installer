@@ -90,8 +90,9 @@ bash ./3_install_chroot.sh
 exit
 
 # Add zfs mount script
-/etc/pam.d/system-auth
-auth       optional                    pam_exec.so          expose_authtok /sbin/mount-zfs-homedir
+https://wiki.archlinux.org/title/ZFS#Unlock_at_login_time:_PAM
+noauto is important in fstab
+you can place pam line (/etc/pam.d/system-auth) in end of first section
 ```
 
 ## Add user
