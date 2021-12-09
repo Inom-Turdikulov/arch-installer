@@ -110,6 +110,12 @@ useradd -m -g users -G wheel myuser
 passwd myuser
 ```
 
+## Install video driver
+```
+xf86-video-amdgpu
+or any other
+```
+
 
 ## Arch Linux Root on ZFS
 
