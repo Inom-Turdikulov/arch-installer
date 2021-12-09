@@ -21,16 +21,20 @@ swapon $DISK_DRIVE_1-part2
 
 echo Create zpool
 zpool create -f \
-    -O atime=off \
-    -O acltype=posixacl \
-    -O canmount=off \
-    -O compression=lz4 \
-    -O dnodesize=legacy \
-    -O normalization=formD \
-    -O xattr=sa \
-    -O devices=off \
-    -O mountpoint=none \
-    -R /mnt rpool mirror $DISK_DRIVE_1-part3 $DISK_DRIVE_2-part3
+
+# parameters from https://wiki.archlinux.org/title/Install_Arch_Linux_on_ZFS
+zpool create -f -o ashift=12         \
+             -O acltype=posixacl       \
+             -O relatime=on            \
+             -O xattr=sa               \
+             -O dnodesize=legacy       \
+             -O normalization=formD    \
+             -O mountpoint=none        \
+             -O canmount=off           \
+             -O devices=off            \
+             -R /mnt                   \
+             -O compression=lz4        \
+             rpool mirror $DISK_DRIVE_1-part3 $DISK_DRIVE_2-part3
 
 echo Create datasets
 zfs create -o canmount=off -o mountpoint=none rpool/ROOT
