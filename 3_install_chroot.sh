@@ -69,11 +69,11 @@ EOL
 touch /boot/loader/entries/arch.conf
 echo "Create a */boot/loader/entries/**arch**.conf* containing"
 cat > /boot/loader/entries/arch.conf <<EOL
-title Arch Linux
-linux /vmlinuz-linux
-initrd /intel-ucode.img
-initrd /initramfs-linux.img
-options zfs=rpool/ROOT/default rw
+title           Arch Linux
+linux           vmlinuz-linux
+initrd          amd-ucode.img
+initrd          initramfs-linux.img
+options         zfs=rpool/ROOT/default rw
 EOL
 
 
