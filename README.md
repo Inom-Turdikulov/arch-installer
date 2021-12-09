@@ -63,16 +63,31 @@ bash 2_pool_2.sh
 
 ## Install core
 ```
+
+# Install the base system
+pacstrap /mnt base base-devel neovim
+
+# copy install scripts
+cp 2_add_zfs_repo.sh /mnt
+cp 3_install_chroot.sh /mnt
+
+# Run chrot script
 arch-chroot /mnt
+
+# Add zfs repo
+bash 2_add_zfs_repo.sh
+
+# Install zfs-linux zfs-utils linux linux-firmware
+
+# If you have issues with zfs-linux check this manual 
+# https://openzfs.github.io/openzfs-docs/Getting%20Started/Arch%20Linux/1-zfs-linux.html#
+
+pacman -Syu archzfs-linux amd-ucode linux linux-firmware
 
 # Set root password
 passwd root
 
 bash ./3_install_chroot.sh
-
-# If you have issues with zfs-linux check this manual 
-# https://openzfs.github.io/openzfs-docs/Getting%20Started/Arch%20Linux/1-zfs-linux.html#
-require removining linux linux-firmware packages & rebuild
 
 exit
 
