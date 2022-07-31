@@ -2,13 +2,7 @@
 
 ## 1. Disk layout
 
-## 2. LUKS
-
-### 2.1 LUKS decrypting
-https://wiki.archlinux.org/title/Universal_2nd_Factor#Data-at-rest_encryption_with_LUKS
-http://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html
-
-## 3. Btrfs RAID
+## 2. Btrfs RAID
 
 ## 4. Archlinux 
 
@@ -16,4 +10,10 @@ http://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security
 
 ### 4.2 Boot
 
-## 5. Ansible
+### 5. LUKS
+
+### 5.1 LUKS decrypting
+https://wiki.archlinux.org/title/Universal_2nd_Factor#Data-at-rest_encryption_with_LUKS
+http://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html
+
+## 6. Ansible
