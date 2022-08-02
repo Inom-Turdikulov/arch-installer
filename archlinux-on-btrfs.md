@@ -1,10 +1,10 @@
 # Arch Linux on Btrfs RAID1
-## Setup instalation via SSH
+## 1. Setup instalation via SSH
 1. Set a root password `passwd`
 2. Confirm that PermitRootLogin yes is set in /etc/ssh/sshd_config. If it is not, set it and reload the OpenSSH daemon sshd.service 
 3. On the local machine, connect to the target machine via SSH with the following command: `ssh root@ip.address.of.target`
 
-## Prepare
+## 2. Prepare
 ```
 pacman -Syy # update mirrors
 
@@ -15,7 +15,7 @@ DISK_DRIVE_2="/dev/disk/by-id/..."
 [ -z "$DISK_DRIVE_2" ] && echo "Warning $DISK_DRIVE_2 Empty"
 ```
 
-## Wipe existing disk
+## 3. WIPE! existing disk
 ```
 # cleanup partition information
 sgdisk --zap-all $DISK_DRIVE_1
@@ -26,7 +26,7 @@ shred --verbose --random-source=/dev/urandom -n1 --zero $DISK_DRIVE_1
 shred --verbose --random-source=/dev/urandom -n1 --zero $DISK_DRIVE_2
 ```
 
-## Partitioning
+## 4. Partitioning
 Since we use cgdisk, it use 1 MiB alignment automatically (useful for perfomance). 
 ```
 # create two partitions on each disks
