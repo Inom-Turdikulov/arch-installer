@@ -69,6 +69,6 @@ mkfs -t btrfs -L BTROOT -m raid1 -d raid1 $DISK_DRIVE_1... DISK_DRIVE_2...
   
   
 # Sources
-https://wiki.gentoo.org/wiki/Btrfs/Native_System_Root_Guide#Partitioning
-https://wiki.archlinux.org/title/btrfs#Compression
-https://gist.github.com/broedli/5604637d5855bef68f3e#72-bootloader-grub2-install
+- https://wiki.gentoo.org/wiki/Btrfs/Native_System_Root_Guide#Partitioning
+- https://wiki.archlinux.org/title/btrfs#Compression
+- https://gist.github.com/broedli/5604637d5855bef68f3e#72-bootloader-grub2-install
