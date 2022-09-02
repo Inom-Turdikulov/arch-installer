@@ -24,8 +24,19 @@ I use it a lot, and know how to work with it.
   build custom system (do-it-yourself), by choosing of thousands packages from official
   repository or AUR. Arch also provide tools like simple and fast package
   manager, arch build system, custom repositories, etc.
+
 * 0. Prepare environment
-** Setup installation via SSH
+** Download distributive and verify checksum
+https://archlinux.org/download/
+#+begin_src sh
+curl -O "..."
+b2sum archlinux-2022.08.05-x86_64.iso
+# compare it (simplest method) copy / C-f,C-v on download page
+#+end_src
+
+After downloading and checking, copy it to flash drive, I use ventoy.
+
+** Setup installation via SSH, recommended way
 1. Set a root password =passwd=
 2. Confirm that =PermitRootLogin= yes is set in =/etc/ssh/sshd_config=. If it is not, set it and reload the OpenSSH daemon =sshd.service=
 3. On the local machine, connect to the target machine via SSH with the following commands:
@@ -65,6 +76,7 @@ I use it a lot, and know how to work with it.
    timedatectl set-ntp true
    timedatectl status
    #+end_src
+
 * 1. Btrfs (better FS) disk layout
 ** Features
 - self-healing in some configurations (nature of COW)
@@ -128,7 +140,12 @@ yes # confirm
 ** Backup GPT scheme and import GPT scheme to different disk, for RAID1 setup
 #+begin_src sh
 sgdisk --backup=partiton_table $DISK_DRIVE_1 # backup GPT first
-sgdisk $DISK_DRIVE_1 -R $DISK_DRIVE_2
+sgdisk --load-backup=partition_table $DISK_DRIVE_2
+# Randomize the GUID
+sgdisk -G $DISK_DRIVE_2
+
+# alternative direct transfer gpt scheme
+# sgdisk $DISK_DRIVE_1 -R $DISK_DRIVE_2
 #+end_src
 ** Create environment variables for each partitons
 #+begin_src sh
@@ -230,8 +247,6 @@ cat /etc/pacman.d/mirrorlist
 pacstrap /mnt base               # Minimal package set to define a basic Arch Linux installation
 pacstrap /mnt linux              # The Linux kernel and module
 pacstrap /mnt linux-firmware     # Firmware files for Linux, also exist other firmware packages
-pacstrap /mnt emacs              # My main text editor and more
-pacstrap /mnt neovim             # My fallback text editor
 pacstrap /mnt base-devel         # Group of base development packages, like gcc, binutils, make, sudo, etc
 pacstrap /mnt btrfs-progs        # Btrfs filesystem utilities
 pacstrap /mnt git                # the fast distributed version control system
@@ -241,7 +256,6 @@ pacstrap /mnt amd-ucode          # Microcode update image for AMD CPUs, for inte
 pacstrap /mnt xf86-video-amdgpu  # X.org amdgpu video driver
 pacstrap /mnt libva-mesa-driver  # VA-API implementation for gallium
 pacstrap /mnt openssh            # Premier connectivity tool for remote login with the SSH protocol
-pacstrap /mnt docker             # Pack, ship and run any application as a lightweight container
 pacstrap /mnt zsh                # A very advanced and programmable command interpreter (shell) for UNIX
 pacstrap /mnt xdg-user-dirs      # Manage user directories like ~/Desktop and ~/Music
 pacstrap /mnt snapper            # A tool for managing BTRFS and LVM snapshots
@@ -270,6 +284,9 @@ less /mnt/etc/fstab
 cp /etc/zsh/zprofile /mnt/root/.zprofile && \
 cp /etc/zsh/zshrc /mnt/root/.zshrc
 
+# Copy partiton table (backup)
+cp partition_table /mnt/
+
 # Change root into the new system:
 arch-chroot /mnt
 
@@ -281,7 +298,8 @@ passwd && chsh -s /bin/zsh
 
 # Localization
 # 1. Edit /etc/locale.gen and uncomment en_US.UTF-8 UTF-8, ru_RU.UTF-8 UTF-8 and other needed locales
-locale-gen
+locale -a  # list locales
+locale-gen  # generate
 
 # 2. Create the /etc/locale.conf file, and set the LANG variable accordingly:
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf
@@ -298,7 +316,6 @@ cat << EOF >> /etc/hosts
 EOF
 
 # Add user & users groups
-# docker - Members of docker group are able to run the docker CLI command as a non-root user
 # input - Access to input devices.
 # storage - Used to gain access to removable drives such as USB hard drives, flash/jump drives, MP3 players; enables the user to mount storage devices.
 # video - Access to video capture devices, 2D/3D hardware acceleration, framebuffer
@@ -306,7 +323,7 @@ EOF
 
 # 1. Generate users
 export USER=inom
-useradd -m -G  docker,input,storage,video,wheel -s /bin/zsh $USER && \
+useradd -m -G  input,storage,video,wheel -s /bin/zsh $USER && \
 passwd $USER
 
 # 2. Edit /etc/sudoers
@@ -390,15 +407,6 @@ ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="
 ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
 EOF
 
-# Docker use IPV6 & Btrfs
-mkdir /etc/docker && cat << EOF > /etc/docker/daemon.json
-{
-  "ipv6": true,
-  "fixed-cidr-v6": "fd00::/80",
-  "storage-driver": "btrfs"
-}
-EOF
-
 # Speed-up AppArmor start by caching profiles
 echo "write-cache" > /etc/apparmor/parser.conf
 
@@ -456,13 +464,6 @@ sudo btrfs filesystem df /
 df
 
 #+end_src
-* systemd-timesyncd
-** xdg project dir
-
-* TODO sheeve zfs u2f email2FA + apppasswords
-* TODO [[id:7ab44a8c-18ac-4942-bf16-e7f2dd829386][pacman-yay]]
-* TODO zram-generator
-* TODO suckless tools:
 * Useful Links
 - https://wiki.archlinux.org/title/System_maintenance
 - https://wiki.archlinux.org/title/improving_performance
@@ -478,15 +479,7 @@ df
 
 
 yadm
-
 anaconda
-
-# awesome
-# https://wiki.archlinux.org/index.php/Awesome
-sudo pacman -S awesome
-# https://wiki.archlinux.org/index.php/Xinitrc
-echo "exec awesome" >> ~/.xinitrc
-
 https://wiki.archlinux.org/index.php/Uniform_look_for_Qt_and_GTK_applications
 https://wiki.archlinux.org/index.php/GTK+#Themes
 https://wiki.archlinux.org/index.php/qt#Appearance
@@ -500,76 +493,22 @@ core & tools
    #+begin_src sh
    # Up network device if needed
    sudo ip link set dev enp10s0 up
-
-   # Enable dhcp for network
-   cat << EOF > /etc/systemd/network/20-wired.network
-   [Match]
-   Name=enp1s0
-   [Network]
-   DHCP=yes
-   EOF
-
-   # Enble systemd-networkd and systemd-resolved
-   sudo systemctl enable --now systemd-networkd systemd-resolved
-
-   # Replace resolve.conf with systemd (recommended)
-   ln -rsf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
-   # Validate units
-   systemctl list-unit-files --state=enabled
    #+end_src
 
-2. Xinit & dwm install
-   Quickstart manual - https://ratfactor.com/dwm
+2. Custom Font install
    #+begin_src sh
-   sudo pacman -S xorg-xinit
-
-   # copy default config
-   cp /etc/X11/xinit/xinitrc ~/.xinitrc
-   # Remove some programs from ~/.xinitrc
-
-   # Add dwm
-   echo "exec dwm" >> ~/.xinitrc
-
-   # Install xorg-server
-   sudo pacman -S xorg-server
-
-   # install dwm using  prescribed way
-   git clone git://git.suckless.org/dwm ~/Projects/suckless/dwm
-   cd ~/Projects/suckless/dwm
-   make
-   sudo make install
-
-   # install st
-   git clone https://aur.archlinux.org/st.git ~/Projects/suckless/st
-   cd ~/Projects/suckless/st
-   makepkg -fsri
-
-   # validate dwm
-   startx
-   # press shift+alt+q to exit
-   # press shift+alt+enter to launch st
-
-   # Autstart dwm on login
-   cat << EOF >> /etc/profile
-   if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-     exec startx
-   fi
-   EOF
-   #+end_src
-4. Browser
-   
-
-3. Font install
-   #+begin_src sh
-   cd ~/.local/share/fonts
-   wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
-
+   # -LJ to download from github
+   curl -LJ -o ~/.local/share/fonts/Meslo.zip --create-dirs https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.1/MPlus.zip
+   trash ~/.local/share/fonts/MPlus.zip
+   fc-cache -v
    #+end_src
 
-5. What to do on a failed disk (btrfs)
+3. Ansible install https://github.com/inomoz/inomoz-quickstart
+
+* What to do on a failed disk (btrfs)
+
 https://superuser.com/questions/1087787/linux-btrfs-convert-to-single-with-failed-drive#:~:text=Begin%20a%20rebalancing%20operation%20with,and%20size%20of%20your%20array.
-Do this in arch livecd...
+Do this in arch live-iso.
 
 Convert Btrfs raid1 to single Btrfs
 #+begin_src sh
@@ -584,29 +523,35 @@ MOUNT_POINT=/mountpoint # don't use spaces here
 mount -o degraded "$DISK_DEVICE"2 "$MOUNTPOINT"2  # 2 is disk & mountpoint postfix /dev/sdb2 /mnt/sdb2
 mount -o degraded "$DISK_DEVICE"3 "$MOUNTPOINT"3  # 3 is disk & mountpoint postfix /dev/sdb3 /mnt/sdb3
 
+# if you have mount issues, try this
+btrfs rescue zero-log /dev/<devicename>
+
 # Begin a rebalancing operation
 btrfs balance start -f -mconvert=single -dconvert=single "$MOUNTPOINT"2
 btrfs balance start -f -mconvert=single -dconvert=single "$MOUNTPOINT"3
 
 # Remove the 'missing' faulty device.
-sudo btrfs device remove missing "$MOUNTPOINT"2
-sudo btrfs device remove missing "$MOUNTPOINT"3
+btrfs device remove missing "$MOUNTPOINT"2
+btrfs device remove missing "$MOUNTPOINT"3
 
 # Restore metadata redundancy
-sudo btrfs balance start -mconvert=dup "$MOUNTPOINT"2
-sudo btrfs balance start -mconvert=dup "$MOUNTPOINT"3
+btrfs balance start -mconvert=dup "$MOUNTPOINT"2
+btrfs balance start -mconvert=dup "$MOUNTPOINT"3
 
 # Now check that it has worked
 btrfs fi show
 btrfs fi usage
 #+end_src
+
 https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices
 
-We then shut down the system, plugged the replacement disk in (actually the disk we had earlier ruined by double degraded booting, after wiping the BTRFS partition), booted and then did the usual dance to turn the now-single BTRFS into a RAID1 again:
+We then shut down the system, plugged the replacement disk in (actually the disk we had earlier ruined by double degraded booting, after wiping the BTRFS partition), booted and then did the usual dance to turn the now-single BTRFS into a RAID1 again.
+
+Restore gpt partiton from backup to new drive first (partition_table), and
+recommended restore EFI partition too.
+Instructions above.
 
 #+begin_src sh
-# TODO # restore gpt partiton from backup to new drive
-
 # add multiple devices
 btrfs device add /dev/sd[x] /boot
 btrfs device add /dev/sd[x] /
@@ -617,15 +562,41 @@ btrfs balance start -dconvert=raid1 -mconvert=raid1 /
 
 # Now check that it has worked
 btrfs fi show
-btrfs fi usage
-sudo btrfs filesystem df /
+btrfs filesystem df /
 #+end_src
 
 As a result, we had a RAID1 again.
-If you wonder why we did not use btrfs replace: We would have to connect the new disk before the second reboot, which is not always practical. With the method above, once we have rebalanced the file system to a single one, we can reboot as often as we like to get the new drive online.
+If you wonder why we did not use Btrfs replace: We would have to connect the new disk before the second reboot, which is not always practical. With the method above, once we have rebalanced the file system to a single one, we can reboot as often as we like to get the new drive online.
 
 Alternative
 https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices#Using_btrfs_replace
 
+* Enable SSH access (sshd) after installation
+#+begin_src sh
+# edit /etc/ssh/sshd_config
+# AllowUsers  username
+
+# validate and start sshd daemon
+systemctl status sshd
+sudo systemctl enable --now sshd
+
+# check ip and then you can connect
+ip a|grep enp
+#+end_src
+
 TODO:
-https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+https://www.cyberciti.biz/faq/linux-backup-restore-a-partition-table-with-sfdisk-command/
+https://wiki.archlinux.org/title/System_time#Time_synchronization
+* systemd-timesyncd
+https://blog.programs74.ru/how-to-use-systemd-timesyncd/
+* xdg project dir
+* TODO zram-generator
+https://aur.archlinux.org/cgit/aur.git/tree/zram-generator.conf?h=zram-generator-defaults
+https://github.com/systemd/zram-generator
+
+Install zram-generator using one of the methods listed above.
+Create a zram-generator.conf config file.
+Run systemctl daemon-reload to create new device units.
+Run systemctl start /dev/zram0 (adjust the name as appropriate to match the config).
+Call zramctl or swapon to confirm that the device has been created and is in use.
+Once installed and configured, the generator will be invoked by systemd early at boot, there is no need to do anything else.
